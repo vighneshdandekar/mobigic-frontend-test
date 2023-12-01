@@ -1,0 +1,59 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Enter Password to download file</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form #loginForm="ngForm" (ngSubmit)="verifyPassword()">
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required>
+                <div
+                    *ngIf="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.dirty || loginForm.controls['password']?.touched)">
+                    <small class="text-danger" *ngIf="loginForm.controls['password']?.errors?.required">
+                        Password is required.
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="downloadFile()">Download</button>
+    </div>
+</ng-template>
+
+<!-- dashboard.component.html -->
+<div class="container mt-5">
+
+    <h2>Upload File</h2>
+    <input #fileInput type="file" (change)="onFileSelected($event)" />
+    <button (click)="uploadFile()" class="btn btn-primary" [disabled]="!selectedFile">Upload</button>
+
+    <button (click)="logout()" class="btn btn-danger">Logout</button>
+
+
+    <h2>Uploaded Files</h2>
+    <!-- file-table.component.html -->
+    <div class="container mt-5">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let file of uploadedFiles">
+                    <td>{{ file.originalName }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="openDownload(content,file.fileId)">Download</button>
+                        <button class="btn btn-danger" (click)="removeFile(file.fileId)">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
